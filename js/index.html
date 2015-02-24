@@ -4,27 +4,24 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<script>
 			$(document).ready(function() {
-				function rpcData(id) {
-					$.getJSON( "dataRPC.html?id=" + id, function( data ) {
-						var items = [];
-						$.each( data, function( key, val ) {
-							items.push( "<li id='" + key + "'>" + val + "</li>" );
-						});
-
-						$( "<ul/>", {
-							"class": "my-new-list",
-							html: items.join( "" )
-						}).appendTo( "body" );
+				function rpcData(id, functionCall) {
+					$.getJSON( "dataRPCc.html?id=" + id, function( data ) {
 					}).done(function() {
-						console.log("this is on done");
+						functionCall();
 					}).always(function() {
 						console.log("this is always done, success or not");
+					}).fail(function() {
+						alert('something went wrong');
 					});
 				}
 				$('.detect').click(function() {
 					// UPDATE users SET authorised = authorised XOR 1 WHERE id = 2;
+					$theElement = $(this).parent();
+					doThis = function() {
+						$theElement.remove();
+					}
 					var id = $(this).parent().children('.itemid').text();
-					rpcData(id);
+					rpcData(id, doThis);
 				});
 			});
 		</script>
