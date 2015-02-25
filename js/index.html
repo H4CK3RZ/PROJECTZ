@@ -4,24 +4,28 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<script>
 			$(document).ready(function() {
-				function rpcData(id, functionCall) {
-					$.getJSON( "dataRPCc.html?id=" + id, function( data ) {
-					}).done(function() {
-						functionCall();
+				function rpcData(id, action, functionCall) {
+					$.getJSON( "dataRPC.php?id=" + id + "&action=" + action, function( data ) {
+					}).done(function(data) {
+						console.log(data.success);
+						functionCall(data.action);
 					}).always(function() {
 						console.log("this is always done, success or not");
 					}).fail(function() {
 						alert('something went wrong');
 					});
 				}
+				//var req = $.getJSON(url);
+				//other, synchronous code here
+				//req.done(function(response) { console.log(response); });
 				$('.detect').click(function() {
-					// UPDATE users SET authorised = authorised XOR 1 WHERE id = 2;
-					$theElement = $(this).parent();
-					doThis = function() {
-						$theElement.remove();
+					$theElement = $(this);
+					doThis = function(itemText) {
+						$theElement.text(itemText);
 					}
 					var id = $(this).parent().children('.itemid').text();
-					rpcData(id, doThis);
+					var action = $(this).text();
+					rpcData(id, action, doThis);
 				});
 			});
 		</script>
@@ -31,7 +35,7 @@
 		<div>
 			<span class="itemid">12</span>
 			<span>Content title</span>
-			<span class="detect">link</span>
+			<span class="detect">remove</span>
 		</div>
 	</body>
 </html>
